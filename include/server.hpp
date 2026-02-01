@@ -13,7 +13,7 @@ struct ServerConfig {
     int threads = 2;
     std::string log_level = "info";
     bool cors = true;
-    std:string corsOrigin = "*"; 
+    std::string corsOrigin = "*"; 
 
 }
 
