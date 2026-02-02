@@ -7,6 +7,9 @@ find_package(Crow REQUIRED)
 # link source files
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/server.cpp
+    src/handlers/base.cpp
+    src/handlers/users.cpp
 )
 
 # link libs

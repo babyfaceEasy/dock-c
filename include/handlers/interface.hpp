@@ -10,4 +10,4 @@ class IHandler {
 public:
     virtual void registerRoutes(App &app) = 0;
 
-}
+};

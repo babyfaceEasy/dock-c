@@ -5,23 +5,23 @@ Server::Server(const ServerConfig &config) : config_(config)
     // set up logging level
     if (this->config_.log_level == "debug") 
     {
-        crow::logger::setLogLevel(crow::logLevel::DEBUG);
+        crow::logger::setLogLevel(crow::LogLevel::DEBUG);
     } 
     else if (this->config_.log_level == "info")
     {
-        crow::logger::setLogLevel(crow::logLevel::INFO);
+        crow::logger::setLogLevel(crow::LogLevel::INFO);
     }
     else if (this->config_.log_level == "warning")
     {
-        crow::logger::setLogLevel(crow::logLevel::WARNING);
+        crow::logger::setLogLevel(crow::LogLevel::WARNING);
     }
     else if (this->config_.log_level == "error")
     {
-        crow::logger::setLogLevel(crow::logLevel::ERROR);
+        crow::logger::setLogLevel(crow::LogLevel::ERROR);
     }
     else if (this->config_.log_level == "critical")
     {
-        crow::logger::setLogLevel(crow::logLevel::CRITICAL);
+        crow::logger::setLogLevel(crow::LogLevel::CRITICAL);
     }
 
     // App init
@@ -45,7 +45,7 @@ Server::Server(const ServerConfig &config) : config_(config)
 
 void Server::setup()
 {
-    // add handlers
+    this->addHandlers(std::make_shared<UserHandler>("/api/users"));
 }
 
 void Server::addHandlers(std::shared_ptr<IHandler> handler)
