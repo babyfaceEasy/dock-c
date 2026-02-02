@@ -1,6 +1,6 @@
 #include "handlers/base.hpp"
 
-BaseHandler::BaseHandler(const std::string &basePath) : basePath_(basePath) {}
+BaseHandler::BaseHandler(const std::string &basePath) : basePath(basePath) {}
 
 crow::response BaseHandler::bad_request(const std::string &message)
 {
@@ -31,6 +31,4 @@ crow::response BaseHandler::internal(const std::string &message)
 
     return crow::response(crow::INTERNAL_SERVER_ERROR, resp);
 }
-
-
 

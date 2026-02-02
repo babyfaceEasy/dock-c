@@ -7,6 +7,7 @@
 
 
 #include "handlers/interface.hpp"
+#include "handlers/users.hpp"
 
 struct ServerConfig {
     int port = 8080;
@@ -15,7 +16,7 @@ struct ServerConfig {
     bool cors = true;
     std::string corsOrigin = "*"; 
 
-}
+};
 
 class Server
 {
@@ -31,4 +32,4 @@ private:
     // Setup our handlers
     void setup();
     void addHandlers(std::shared_ptr<IHandler> handler);
-}
+};
