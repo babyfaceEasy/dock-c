@@ -16,6 +16,7 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PUBLIC
         Crow::Crow
+        nlohmann_json::nlohmann_json
 )
 
 # link header files (include dir)
