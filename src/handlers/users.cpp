@@ -11,7 +11,8 @@ static json userSchema = R"({
     "type": "object",
     "properties" : {
         "username": { "type": "string", "minLength": 3 },
-        "email": { "type": "string", "format": "email"}
+        "email": { "type": "string", "format": "email"},
+        "age": { "type": "integer", "minimum": 5},
     },
     "required": ["username", "email"]
 })"_json;
