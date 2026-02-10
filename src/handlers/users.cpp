@@ -27,63 +27,46 @@ UserHandler::UserHandler(const std::string &basePath) : BaseHandler(basePath)
 
     this->last_id_ += 1;
     this->users_[this->last_id_] = User{1, "Jane Doe", "jane@example.com"};
-} 
-
-crow::response UserHandler::create_old(const crow::request &req)
-{
-    crow::json::rvalue json = crow::json::load(req.body);
-
-    std::string  username = json["username"].s();
-    std::string email = json["email"].s();
-
-    this->mutex_.lock();
-    this->last_id_ += 1;
-    User user = User{this->last_id_, username, email};
-    this->users_[this->last_id_] = user;
-
-    this->mutex_.unlock();
-
-    crow::json::wvalue response;
-    response["id"] = user.id;
-    response["username"] = user.username;
-    response["email"] = user.email;
-
-    return crow::response(crow::CREATED, response);
 }
 
 crow::response UserHandler::create(const crow::request &req)
 {
     try {
-
-        // parse crow body into nlohmann json
+        // 1. Parse body
         json request_json = json::parse(req.body);
         
-        // validate against the schema
+        // 2. Validate against schema
         json_validator validator;
         validator.set_root_schema(userSchema);
-        
-        // thhis throws an exception if validation fails
-        validator.validate(request_json);
+        validator.validate(request_json); // Throws if invalid
 
-        // extract values (validation passed)
+        // 3. Extract values
         std::string username = request_json["username"];
         std::string email = request_json["email"];
 
+        // 4. Thread-safe data insertion (The missing part!)
+        this->mutex_.lock();
+        this->last_id_ += 1;
+        User newUser{this->last_id_, username, email};
+        this->users_[this->last_id_] = newUser;
+        this->mutex_.unlock();
+
+        // 5. Build Crow response
         crow::json::wvalue response;
-        response["id"] = user.id;
-        response["username"] = user.username;
-        response["email"] = user.email;
+        response["id"] = newUser.id;
+        response["username"] = newUser.username;
+        response["email"] = newUser.email;
 
         return crow::response(crow::CREATED, response);
 
     } catch (const std::exception &e) {
-        // return apprioriate message
         crow::json::wvalue err_res;
         err_res["error"] = "Validation failed";
         err_res["message"] = e.what();
         return crow::response(crow::BAD_REQUEST, err_res);
     }
 }
+
 
 crow::response UserHandler::get(int id)
 {
