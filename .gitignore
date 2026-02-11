@@ -137,3 +137,6 @@ Makefile
 *.swp
 *.swo
 *~.nib
+
+# personal files
+hold.txt
